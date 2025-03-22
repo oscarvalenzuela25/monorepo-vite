@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { FC } from "react";
-import PokeballLoading from "../components/PokeballLoading";
-import pokeBackground from "../assets/pokeBackground.png";
+import PokeballLoading from "../../components/PokeballLoading";
+import pokemon from "../../assets/pokemon.png";
+import pokeBackground from "../../assets/pokeBackground.png";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import styles from "./styles.module.css";
 
 type Props = {
   pokemonId: number;
@@ -14,9 +16,11 @@ const Pokemon: FC<Props> = ({ pokemonId }) => {
   const { data, isLoading } = useQuery({
     queryKey: ["pokemon", pokemonId],
     queryFn: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 500));
       const { data: pokemon } = await axios.get(
         `https://pokeapi.co/api/v2/pokemon/${pokemonId}`
       );
+
       return pokemon;
     },
     enabled: !!pokemonId,
@@ -32,23 +36,30 @@ const Pokemon: FC<Props> = ({ pokemonId }) => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
+        width: 600,
+        height: 337.5,
+        backgroundImage: `url(${data ? pokemon : pokeBackground})`,
+        backgroundSize: "cover",
+        position: "relative",
       }}
     >
-      <h1
+      <h1 className={styles.title}>{data?.name || ""}</h1>
+
+      <div
         style={{
-          marginBottom: 40,
+          position: "absolute",
+          left: data ? 60 : 120,
+          top: data ? 40 : 90,
         }}
       >
-        {isLoading ? "Loading..." : data?.name || ""}
-      </h1>
-
-      <PokeballLoading isLoading={isLoading}>
-        <img
-          src={data?.sprites?.front_default || pokeBackground}
-          alt={data?.name || "pokeBackground"}
-          width={data ? 200 : 600}
-        />
-      </PokeballLoading>
+        <PokeballLoading isLoading={isLoading} data={data}>
+          <img
+            src={data?.sprites?.front_default}
+            alt={data?.name}
+            width={200}
+          />
+        </PokeballLoading>
+      </div>
     </div>
   );
 };

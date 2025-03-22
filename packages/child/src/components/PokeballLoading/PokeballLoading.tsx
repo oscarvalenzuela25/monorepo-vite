@@ -3,12 +3,18 @@ import "./styles.css";
 
 type Props = PropsWithChildren & {
   isLoading: boolean;
+  data: unknown;
 };
 
-const PokeballLoading: FC<Props> = ({ isLoading, children }) => {
+const PokeballLoading: FC<Props> = ({ isLoading, children, data }) => {
+  if (!isLoading && !data) {
+    return null;
+  }
+
   if (!isLoading) {
     return <>{children}</>;
   }
+
   return <div className="ball"></div>;
 };
 

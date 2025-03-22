@@ -1,0 +1,21 @@
+@font-face {
+  font-family: "PokemonFont";
+  src: url("./../../fonts/PokemonSolid.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.title {
+  font-family: "PokemonFont", sans-serif;
+  position: absolute;
+  top: 15%;
+  right: 5%;
+  margin: 0;
+  text-transform: capitalize;
+  color: #ffde00;
+  text-shadow:
+    -2px -2px 0 #0031f0,
+    2px -2px 0 #0031f0,
+    -2px 2px 0 #0031f0,
+    2px 2px 0 #0031f0;
+}
